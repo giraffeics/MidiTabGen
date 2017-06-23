@@ -6,7 +6,7 @@ using namespace std;
 
 int highestString(int);
 string toLower(string str);
-float getBurden(int, int, int, int);
+float getBurden(int, int, int, int, int);
 
 int numStrings = 6;
 
@@ -85,6 +85,10 @@ int main(int argc, char** argv)
     else
         track = 0;
 
+    cout << "How many octaves do you want to shift this track up or down by?" << endl;
+    cin >> offset;
+    offset *= 12;
+
     ofstream outfile;
     outfile.open(ofname, ios::out);
 
@@ -111,13 +115,13 @@ int main(int argc, char** argv)
         if(n==0)
             minBurden = 0;
         else
-            minBurden = getBurden(tabs[n-1].str, handPos, tabs[n].str, tabs[n].fret);
+            minBurden = getBurden(handPos, tabs[n-1].str, tabs[n-1].fret, tabs[n].str, tabs[n].fret);
 
         for(int j=0; j<numStrings; j++)
         {
             if(tuning[j] < pitch)
             {
-                float burden = getBurden(tabs[n-1].str, handPos, j, pitch-tuning[j]);
+                float burden = getBurden(handPos, tabs[n-1].str, tabs[n-1].fret, j, pitch-tuning[j]);
                 if(burden < minBurden)
                 {
                     tabs[n].str = j;
@@ -160,7 +164,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-float getBurden(int str1, int hand1, int str2, int fret2)
+float getBurden(int hand1, int str1, int fret1, int str2, int fret2)
 {
     float burden = str1 - str2; //calculate burden based on switching strings
     if(burden<0)
@@ -173,6 +177,9 @@ float getBurden(int str1, int hand1, int str2, int fret2)
         burden += 0.5;
     if(fret2 > hand1 + 3)
         burden += 0.5;
+
+    if(fret1 - fret2 == 4 || fret2 - fret1 == 4)    //calculate burden based on double stretch
+        burden += 0.5f;
 
     if(fret2 < hand1 - 1)   //calculate burden based on full hand movement
         burden += hand1 - fret2;
