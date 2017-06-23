@@ -131,10 +131,13 @@ int main(int argc, char** argv)
             }
         }
 
-        if(tabs[n].fret < handPos-1)
-            handPos = tabs[n].fret;
-        if(tabs[n].fret > handPos+4)
-            handPos = tabs[n].fret-3;
+        if(tabs[n].fret != 0)
+        {
+            if(tabs[n].fret < handPos-1)
+                handPos = tabs[n].fret;
+            if(tabs[n].fret > handPos+4)
+                handPos = tabs[n].fret-3;
+        }
 
         tabs[n].fret = pitch - tuning[tabs[n].str];
     }
@@ -173,18 +176,21 @@ float getBurden(int hand1, int str1, int fret1, int str2, int fret2)
     if(burden<0)
         burden=0;
 
-    if(fret2 < hand1)   //calculate burden based on slight stretch
-        burden += 0.5;
-    if(fret2 > hand1 + 3)
-        burden += 0.5;
+    if(fret2 != 0)  //prefer open strings
+    {
+        if(fret2 < hand1)   //calculate burden based on slight stretch
+            burden += 0.5;
+        if(fret2 > hand1 + 3)
+            burden += 0.5;
 
-    if(fret1 - fret2 == 4 || fret2 - fret1 == 4)    //calculate burden based on double stretch
-        burden += 0.5f;
+        if(fret1 - fret2 == 4 || fret2 - fret1 == 4)    //calculate burden based on double stretch
+            burden += 0.5f;
 
-    if(fret2 < hand1 - 1)   //calculate burden based on full hand movement
-        burden += hand1 - fret2;
-    if(fret2 > hand1 + 4)
-        burden += fret2 - hand1 + 3;
+        if(fret2 < hand1 - 1)   //calculate burden based on full hand movement
+            burden += hand1 - fret2;
+        if(fret2 > hand1 + 4)
+            burden += fret2 - hand1 + 3;
+    }
 
     return burden;
 }

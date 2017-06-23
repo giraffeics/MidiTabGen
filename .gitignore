@@ -4,3 +4,4 @@ obj/
 *.layout
 *.txt
 *.mid
+*.depend
