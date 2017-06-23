@@ -146,11 +146,15 @@ int main(int argc, char** argv)
     {
         lines[tabs[i].str] << (int)tabs[i].fret << '-';
 
+        string after = "--";    //maintain spacing with double digit fret numbers
+        if(tabs[i].fret >= 10)
+            after = "---";
+
         for(int j=0; j<numStrings; j++)
         {
             if(j != tabs[i].str)
             {
-                lines[j] << "--";
+                lines[j] << after;
             }
         }
     }
