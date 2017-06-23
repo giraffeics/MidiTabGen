@@ -6,6 +6,7 @@ using namespace std;
 
 int highestString(int);
 string toLower(string str);
+float getBurden(int, int, int, int);
 
 int numStrings = 6;
 
@@ -75,26 +76,62 @@ int main(int argc, char** argv)
       exit(1);
     }
 
+    int track = infile.getTrackCount();
+    if(track>1)
+    {
+        cout << "This file contains " << track << " tracks, numbered 0 through " << (track-1) << ". Which would you like to use?" << endl;
+        cin >> track;
+    }
+    else
+        track = 0;
+
     ofstream outfile;
     outfile.open(ofname, ios::out);
 
-    for(int i=0; i<infile[0].size(); i++)   //calculate number of notes
-        if(infile[0][i].isNoteOn())
+    for(int i=0; i<infile[track].size(); i++)   //calculate number of notes
+        if(infile[track][i].isNoteOn())
             numNotes++;
 
     tabs = new tab[numNotes];
 
-    for(int i=0,n=-1; i<infile[0].size(); i++) //first pass in tab construction: find highest viable strings for each note
+    for(int i=0,n=-1; i<infile[track].size(); i++) //first pass in tab construction
     {
-        if(!infile[0][i].isNoteOn())
+        if(!infile[track][i].isNoteOn())
         {
             continue;
         }
 
         n++;
 
-        int pitch = (int)infile[0][i][1] + offset;
+        int pitch = (int)infile[track][i][1] + offset;
         tabs[n].str = highestString(pitch);
+        tabs[n].fret = pitch - tuning[tabs[n].str];
+
+        float minBurden;
+        if(n==0)
+            minBurden = 0;
+        else
+            minBurden = getBurden(tabs[n-1].str, handPos, tabs[n].str, tabs[n].fret);
+
+        for(int j=0; j<numStrings; j++)
+        {
+            if(tuning[j] < pitch)
+            {
+                float burden = getBurden(tabs[n-1].str, handPos, j, pitch-tuning[j]);
+                if(burden < minBurden)
+                {
+                    tabs[n].str = j;
+                    tabs[n].fret = pitch-tuning[j];
+                    minBurden = burden;
+                }
+            }
+        }
+
+        if(tabs[n].fret < handPos-1)
+            handPos = tabs[n].fret;
+        if(tabs[n].fret > handPos+4)
+            handPos = tabs[n].fret-3;
+
         tabs[n].fret = pitch - tuning[tabs[n].str];
     }
 
@@ -121,6 +158,28 @@ int main(int argc, char** argv)
     cout << "Successfully created tabs." << endl;
 
     return 0;
+}
+
+float getBurden(int str1, int hand1, int str2, int fret2)
+{
+    float burden = str1 - str2; //calculate burden based on switching strings
+    if(burden<0)
+        burden*=-1;
+    burden -= 0.5f;
+    if(burden<0)
+        burden=0;
+
+    if(fret2 < hand1)   //calculate burden based on slight stretch
+        burden += 0.5;
+    if(fret2 > hand1 + 3)
+        burden += 0.5;
+
+    if(fret2 < hand1 - 1)   //calculate burden based on full hand movement
+        burden += hand1 - fret2;
+    if(fret2 > hand1 + 4)
+        burden += fret2 - hand1 + 3;
+
+    return burden;
 }
 
 int highestString(int note) //highest string that can play a given note
