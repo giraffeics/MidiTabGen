@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     string ifname = ""; //read in file name from argument 1
     if(argc < 2)
     {
-        cout << "Drag a text file from Windows Explorer into this window and press the enter key." << endl;
+        cout << "Drag a midi file from Windows Explorer into this window and press the enter key." << endl;
         getline(cin, ifname);
 
         int length = ifname.size();
