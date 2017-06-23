@@ -1,0 +1,76 @@
+# depslib dependency file v1.0
+1498200176 source:f:\programming\codeblocks projects\miditabgen\midifile\src-library\binasc.cpp
+	"Binasc.h"
+	<sstream>
+	<string.h>
+
+1498198668 f:\programming\codeblocks projects\miditabgen\midifile\include\binasc.h
+	<iostream>
+	<fstream>
+	<string>
+
+1498198668 source:f:\programming\codeblocks projects\miditabgen\midifile\src-library\midievent.cpp
+	"MidiEvent.h"
+	<stdlib.h>
+
+1498198668 f:\programming\codeblocks projects\miditabgen\midifile\include\midievent.h
+	"MidiMessage.h"
+	<vector>
+
+1498198668 f:\programming\codeblocks projects\miditabgen\midifile\include\midimessage.h
+	<vector>
+	<string>
+
+1498198668 source:f:\programming\codeblocks projects\miditabgen\midifile\src-library\midieventlist.cpp
+	"MidiEventList.h"
+	<vector>
+	<iostream>
+	<algorithm>
+	<iterator>
+	<utility>
+
+1498198668 f:\programming\codeblocks projects\miditabgen\midifile\include\midieventlist.h
+	"MidiEvent.h"
+	<vector>
+
+1498198668 source:f:\programming\codeblocks projects\miditabgen\midifile\src-library\midifile.cpp
+	"MidiFile.h"
+	"Binasc.h"
+	<string.h>
+	<iostream>
+	<iomanip>
+	<fstream>
+	<sstream>
+	<algorithm>
+	<iterator>
+
+1498198668 f:\programming\codeblocks projects\miditabgen\midifile\include\midifile.h
+	"MidiEventList.h"
+	<vector>
+	<istream>
+	<fstream>
+
+1498198668 source:f:\programming\codeblocks projects\miditabgen\midifile\src-library\midimessage.cpp
+	"MidiMessage.h"
+	<vector>
+	<iostream>
+	<iterator>
+
+1498198668 source:f:\programming\codeblocks projects\miditabgen\midifile\src-library\options.cpp
+	"Options.h"
+	<stdlib.h>
+	<string.h>
+	<cctype>
+	<iostream>
+	<algorithm>
+
+1498198668 f:\programming\codeblocks projects\miditabgen\midifile\include\options.h
+	<vector>
+	<map>
+	<string>
+
+1498212570 source:f:\programming\codeblocks projects\miditabgen\src\main.cpp
+	<iostream>
+	<sstream>
+	<MidiFile.h>
+
